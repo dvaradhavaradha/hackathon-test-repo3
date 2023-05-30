@@ -86,10 +86,4 @@ resource "google_sql_database_instance" "instance" {
 }
 
 
-resource "google_sql_user" "users" {
-  for_each = local.project_user_list
 
-  name     = each.value.user
-  instance = google_sql_database_instance.instance[each.value.project].name
-  password = "password" # TODO: Replace with a secure method of supplying the password
-}
