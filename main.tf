@@ -64,14 +64,12 @@ resource "google_container_cluster" "cluster" {
   initial_node_count = 3
 
   master_auth {
-    username = ""
-    password = ""
-
     client_certificate_config {
       issue_client_certificate = false
     }
   }
 }
+
 
 resource "google_sql_database_instance" "instance" {
   for_each = google_project.project
@@ -80,10 +78,13 @@ resource "google_sql_database_instance" "instance" {
   project  = each.key
   region   = "us-central1"
 
+  database_version = "POSTGRES_13" # specify the database version here
+
   settings {
     tier = "db-f1-micro"
   }
 }
+
 
 resource "google_sql_user" "users" {
   for_each = local.project_user_list
