@@ -24,7 +24,7 @@ resource "google_project" "project" {
   project_id = each.key
   folder_id  = "256082523262"
 
-  billing_account = "0175F4-91F155-9AB0E8"
+  billing_account = "01F392-34E6A6-65C4D4"
 }
 
 resource "google_project_service" "compute" {
