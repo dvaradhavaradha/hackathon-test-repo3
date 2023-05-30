@@ -27,6 +27,48 @@ resource "google_project" "project" {
   billing_account = "0175F4-91F155-9AB0E8"
 }
 
+resource "google_project_service" "compute" {
+  for_each = google_project.project
+
+  project = each.key
+  service = "compute.googleapis.com"
+
+  disable_dependent_services = true
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "container" {
+  for_each = google_project.project
+
+  project = each.key
+  service = "container.googleapis.com"
+
+  disable_dependent_services = true
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "sql" {
+  for_each = google_project.project
+
+  project = each.key
+  service = "sqladmin.googleapis.com"
+
+  disable_dependent_services = true
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "sqlcomponent" {
+  for_each = google_project.project
+
+  project = each.key
+  service = "sql-component.googleapis.com"
+
+  disable_dependent_services = true
+  disable_on_destroy = false
+}
+
+
+
 locals {
   project_user_list = flatten([
     for project, users in var.project_user_map : [
@@ -55,6 +97,7 @@ resource "random_integer" "suffix" {
 }
 
 resource "google_container_cluster" "cluster" {
+  depends_on [google_project_service.compute,google_project_service.container]
   for_each = google_project.project
 
   name     = "${each.key}-cluster-${random_integer.suffix[each.key].result}"
@@ -72,6 +115,7 @@ resource "google_container_cluster" "cluster" {
 
 
 resource "google_sql_database_instance" "instance" {
+  depends_on [google_project_service.sql,google_project_service.sqlcomponent]
   for_each = google_project.project
 
   name     = "${each.key}-sql-${random_integer.suffix[each.key].result}"
