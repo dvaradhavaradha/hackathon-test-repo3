@@ -10,7 +10,11 @@ variable "project_user_map" {
 
 provider "google" {
   credentials = var.gcp-creds
-  version = "3.5.0" # Please use the latest version
+}
+
+
+variable "gcp-creds" {
+default= ""
 }
 
 resource "google_project" "project" {
