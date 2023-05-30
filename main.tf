@@ -97,7 +97,7 @@ resource "random_integer" "suffix" {
 }
 
 resource "google_container_cluster" "cluster" {
-  depends_on [google_project_service.compute,google_project_service.container]
+  depends_on = [google_project_service.compute,google_project_service.container]
   for_each = google_project.project
 
   name     = "${each.key}-cluster-${random_integer.suffix[each.key].result}"
@@ -115,7 +115,7 @@ resource "google_container_cluster" "cluster" {
 
 
 resource "google_sql_database_instance" "instance" {
-  depends_on [google_project_service.sql,google_project_service.sqlcomponent]
+  depends_on = [google_project_service.sql,google_project_service.sqlcomponent]
   for_each = google_project.project
 
   name     = "${each.key}-sql-${random_integer.suffix[each.key].result}"
