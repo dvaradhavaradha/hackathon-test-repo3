@@ -104,7 +104,7 @@ resource "google_container_cluster" "cluster" {
   location = "us-central1"
   project  = each.key
 
-  initial_node_count = 3
+  initial_node_count = 1
 
   master_auth {
     client_certificate_config {
