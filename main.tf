@@ -41,7 +41,7 @@ locals {
 resource "google_project_iam_member" "project" {
   for_each = { for pu in local.project_user_list : "${pu.project}-${pu.user}" => pu }
 
-  project = each.value.project_user_list
+  project = each.value.project
   role    = "roles/editor" # You can specify any other role
 
   member = "user:${each.value.user}"
